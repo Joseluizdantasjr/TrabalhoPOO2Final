@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Aluno {
+  nome_aluno                  String
+  matricula             String       @unique @id
+  email                 String    @unique
+  curso                 String
+  numero_grupo          String?
+  grupo_participa Grupo? @relation("participa", fields: [numero_grupo], references: [numero_grupo])
+  grupoLidera Grupo? @relation("lidera")
+  avaliacoes AvaliacaoAluno[] @relation("aluno_avalia")
+}
+
+model Professor {
+  nome_professor        String
+  email                 String    @unique
+  matricula             String      @unique @id
+  avaliacoes AvaliacaoProfessor[] @relation("professor_avalia")
+}
+
+model Grupo {
+  numero_grupo          String       @id @unique
+  nome_grupo            String 
+  matricula_lider              String       @unique
+  numero_estande        String       @unique
+  dia_apresentacao      DateTime
+  alunos_participam Aluno[] @relation("participa")
+  lider Aluno @relation("lidera", fields: [matricula_lider], references: [matricula])
+  estande Estande @relation("apresenta_em", fields: [numero_estande], references: [numero_estande])
+  avaliacaoAluno AvaliacaoAluno? @relation("aluno_avalia_grupo") 
+  avaliacaoProfessor AvaliacaoProfessor? @relation("professor_avalia_grupo") 
+  avaliacao Avaliacao? @relation("avalia_grupo")
+}
+
+model Estande {
+  numero_estande          String     @id @unique
+  grupos Grupo[] @relation("apresenta_em")
+}
+
+model AvaliacaoAluno {
+  numero_avaliacao String @id @unique
+  matricula_avaliador_aluno      String
+  numero_grupo_avaliado   String     @unique
+  nota                    Int
+  grupo_avaliado Grupo @relation("aluno_avalia_grupo", fields: [numero_grupo_avaliado], references: [numero_grupo])
+  avaliador_aluno Aluno @relation("aluno_avalia", fields: [matricula_avaliador_aluno], references: [matricula])
+  avaliacao_final Avaliacao? @relation("avaliacao1")
+  @@unique([numero_avaliacao, nota])
+}
+
+model AvaliacaoProfessor {
+  numero_avaliacao String @id @unique
+  matricula_avaliador_professor  String
+  numero_grupo_avaliado   String    @unique 
+  nota                    Int
+  grupo_avaliado Grupo @relation("professor_avalia_grupo", fields: [numero_grupo_avaliado], references: [numero_grupo])
+  avaliador_professor Professor @relation("professor_avalia", fields: [matricula_avaliador_professor], references: [matricula])
+  avaliacao_final Avaliacao? @relation("avaliacao2")
+   @@unique([numero_avaliacao, nota])
+}
+
+model Avaliacao {
+  numero_avaliacao String @id @unique
+  numero_avaliacao_aluno String @unique
+  numero_avaliacao_professor String @unique
+  numero_grupo_avaliado   String    @unique
+  nota1                    Int
+  nota2                    Int
+  notaFinal     Float
+  grupo_avaliado Grupo @relation("avalia_grupo", fields: [numero_grupo_avaliado], references: [numero_grupo])
+  avaliacao_aluno AvaliacaoAluno @relation("avaliacao1", fields: [numero_avaliacao_aluno, nota1], references: [numero_avaliacao, nota])
+  avaliacao_professor AvaliacaoProfessor @relation("avaliacao2", fields: [numero_avaliacao_professor, nota2], references: [numero_avaliacao, nota])
+  @@unique([numero_avaliacao_aluno, nota1])
+  @@unique([numero_avaliacao_professor, nota2])
+}
