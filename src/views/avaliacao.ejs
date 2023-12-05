@@ -251,7 +251,7 @@
             let numero_avaliacao_aluno = document.getElementById('atualizarNumeroAvaliacaoAluno').value;
             let numero_avaliacao_professor = document.getElementById('atualizarNumeroAvaliacaoProfessor').value;
             let numero_grupo_avaliado = document.getElementById('atualizarNumeroGrupoAvaliado').value;
-            let notaFinal = nota1+nota2;
+            let notaFinal = (nota1+nota2)/2;
 
             let body = JSON.stringify({
                 numero_avaliacao: numero_avaliacao,
