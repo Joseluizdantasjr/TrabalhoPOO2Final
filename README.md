@@ -3,7 +3,7 @@
 # **Projeto Programação Orientada À Objetos 2**
 </div>
 
-### Alunos: Christopher Thompson, Gabriel Guido, Guilherme Mafra e José Luiz Dantas
+### Alunos: Christopher Thompson, Guilherme Mafra e José Luiz Dantas
 ### Prof. Otávio Lube
 ### Turma: CC4M
 
