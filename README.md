@@ -22,14 +22,16 @@ Para iniciarmos o projeto é necessario fazer as seguintes instalações:
 mkdir hello-prisma 
 cd hello-prisma
 ```
-#### Baixar e iniciar o node, TypeScript e o Prisma
+#### Baixar e instalar tudo necessário
 ``` 
 npm install typescript --save-dev
 npx tsc --init
 npm install prisma --save-dev
 npx prisma init --datasource-provider sqlite
+npm install express @types/express --save-dev
+npm install ejs
+
 ```
-Todos esses Códigos e seus tutorias podem ser encontrados no site do [Prisma](https://www.prisma.io/docs/getting-started/quickstart)
 
 # **3. Rodando o Projeto**
 #### Inserir no terminal para migras para o banco de dados os dados feitos no schema.prisma
@@ -41,20 +43,14 @@ npx prisma migrate dev --name init
 >```
 >   npx ts-node script.ts
 >```
-### Código para popular o banco (rode um de cada vez dentro da main do script.ts)
+
+#### Inserir no terminal para abrir o server
 ```
-preencherAluno(primeiro_aluno);
-preencherAluno(segundo_aluno);
-preencherAluno(terceiro_aluno);
-preencherProfessor(terceiro_professor);
-preencherEstande(primeiro_estande);
-preencherGrupo(primeiro_grupo);
-agruparAluno(segundo_aluno, 1);
-preencherAvaliacaoAluno(primeira_avaliacao_aluno);
-preencherAvaliacaoProfessor(primeira_avaliacao_professor);
-preencherAvaliacao(primeira_avaliacao, primeira_avaliacao_aluno, primeira_avaliacao_professor);
+npx ts-node-dev ./src/server.ts   
 ```
+
 # 4 Linguagens utilizadas no projeto:
 - Prisma
 - Draw.io
 - TypeScript
+- EJS
