@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow-y: visible;
+            background-color: orange;
+        }
+
+        main.container {
+            min-width: 100%;
+            min-height: 100%;
+
+            display: grid;
+            place-items: center;
+        }
+
+        input.form-control {
+            color: black !important;
+            background-color: transparent !important;
+            border-color: black !important;
+        }
+
+        input.form-control::placeholder {
+            color: black !important;
+        }
+
+        input.form-control:focus,
+        input.form-control:active {
+            background-color: transparent !important;
+            border-color: darkslateblue !important;
+        }
+
+        input.form-control:focus::placeholder {
+            color: darkslateblue !important;
+        }
+
+        table {
+            border: 0.1px solid darkslateblue !important;
+        }
+
+        th {
+            font-size: 1rem;
+            font-weight: 700;
+
+            background-color: darkslateblue !important;
+        }
+
+        th,
+        td {
+            text-align: center;
+        }
+
+        td {
+            background-color: transparent !important;
+        }
+
+        .modal-content {
+            background-color: darkslateblue;
+            color: black;
+        }
+
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+            border: none !important;
+        }
+    </style>
+
+    <title>Aluno</title>
+</head>
+
+<body>
+    <main class="container">
+
+        <form class="row g-3" style="width: 60% !important;">
+            <div class="col-md-6">
+                <input type="text" name="preencherNumeroAvaliacao" id="preencherNumeroAvaliacao" class="form-control"
+                    placeholder="NumeroAvaliacao" aria-label="NumeroAvaliacao">
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="preencherNumeroAvaliacaoAluno" id="preencherNumeroAvaliacaoAluno" class="form-control" placeholder="NumeroAvaliacaoAluno"
+                    aria-label="NumeroAvaliacaoAluno">
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="preencherNumeroAvaliacaoProfessor" id="preencherNumeroAvaliacaoProfessor" class="form-control" placeholder="NumeroAvaliacaoProfessor"
+                    aria-label="MatriculaLider">
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="preencherNumeroAvaliacaoProfessor" id="preencherNumeroAvaliacaoProfessor" class="form-control" placeholder="NumeroAvaliacaoProfessor"
+                    aria-label="NumeroAvaliacaoProfessor">
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="preencherNumeroGrupoAvaliado" id="preencherNumeroGrupoAvaliado" class="form-control" placeholder="NumeroGrupoAvaliado"
+                    aria-label="NumeroGrupoAvaliado">
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="preencherNumeroGrupoAvaliado" id="preencherNumeroGrupoAvaliado" class="form-control" placeholder="NumeroGrupoAvaliado"
+                    aria-label="NumeroGrupoAvaliado">
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary" style="width: 100%;"
+                    onclick="preencherAvaliacao()">preencher</button>
+            </div>
+        </form>
+
+        <table class="table table-striped-custom table-bordered align-middle table-dark" style="width: 60% !important;">
+            <thead>
+                <tr>
+                    <th scope="col">Numero Avaliacao</th>
+                    <th scope="col">Numero Avaliacao Aluno</th>
+                    <th scope="col">Numero Avaliacao Professor</th>
+                    <th scope="col">Numero Grupo Avaliado</th>
+                    <th scope="col">Nota 1</th>
+                    <th scope="col">Nota 2</th>
+                    <th scope="col">Nota Final</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i < avaliacoes.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= avaliacoes[i].numero_avaliacao %>
+                        </td>
+                        <td>
+                            <%= avaliacoes[i].numero_avaliacao_aluno %>
+                        </td>
+                        <td>
+                            <%= avaliacoes[i].numero_avaliacao_professor %>
+                        </td>
+                        <td>
+                            <%= avaliacoes[i].numero_grupo_avaliado %>
+                        </td>
+                        <td>
+                            <%= avaliacoes[i].nota1 %>
+                        </td>
+                        <td>
+                            <%= avaliacoes[i].nota2 %>
+                        </td>
+                        <td>
+                            <%= avaliacoes[i].notaFinal %>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#UpdateModal">
+                                atualizar
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger"
+                                onclick="deletarAvaliacao('<%= avaliacoes[i].numero_avaliacao %>')">
+                                Deletar
+                            </button>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </main>
+ 
+    <div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="UpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="UpdateModalLabel">atualizar avaliacao</h1>
+                </div>
+                <div class="modal-body">
+
+                    <form class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" name="atualizarNumeroAvaliacao" id="atualizarNumeroAvaliacao" class="form-control"
+                                placeholder="NumeroAvaliacao" aria-label="NumeroAvaliacao">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="atualizarNumeroAvaliacaoAluno" id="atualizarNumeroAvaliacaoAluno" class="form-control" placeholder="NumeroAvaliacaoAluno"
+                                aria-label="NumeroAvaliacaoAluno">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="atualizarNumeroAvaliacaoProfessor" id="atualizarNumeroAvaliacaoProfessor" class="form-control" placeholder="NumeroAvaliacaoProfessor"
+                                aria-label="MatriculaLider">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="atualizarNumeroAvaliacaoProfessor" id="atualizarNumeroAvaliacaoProfessor" class="form-control" placeholder="NumeroAvaliacaoProfessor"
+                                aria-label="NumeroAvaliacaoProfessor">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="atualizarNumeroGrupoAvaliado" id="atualizarNumeroGrupoAvaliado" class="form-control" placeholder="NumeroGrupoAvaliado"
+                                aria-label="NumeroGrupoAvaliado">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="atualizarNumeroGrupoAvaliado" id="atualizarNumeroGrupoAvaliado" class="form-control" placeholder="NumeroGrupoAvaliado"
+                                aria-label="NumeroGrupoAvaliado">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="atualizarAvaliacao()">atualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function preencherAtualizacao() {
+            let numero_avaliacao = document.getElementById('preencherNumeroAvaliacao').value;
+            let numero_avaliacao_aluno = document.getElementById('preencherNumeroAvaliacaoAluno').value;
+            let numero_avaliacao_professor = document.getElementById('preencherNumeroAvaliacaoProfessor').value;
+            let numero_grupo_avaliado = document.getElementById('preencherNumeroGrupoAvaliado').value;
+            let notaFinal = (nota1+nota2)/2;
+
+            let body = JSON.stringify({
+                numero_avaliacao: numero_avaliacao,
+                numero_avaliacao_aluno: numero_avaliacao_aluno,
+                numero_avaliacao_professor: numero_avaliacao_professor,
+                numero_grupo_avaliado: numero_grupo_avaliado,
+                notaFinal: notaFinal
+            });
+
+            fetch("/avaliacao/insert", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
+        }
+
+        function atualizarAvaliacao() {
+            let numero_avaliacao = document.getElementById('atualizarNumeroAvaliacao').value;
+            let numero_avaliacao_aluno = document.getElementById('atualizarNumeroAvaliacaoAluno').value;
+            let numero_avaliacao_professor = document.getElementById('atualizarNumeroAvaliacaoProfessor').value;
+            let numero_grupo_avaliado = document.getElementById('atualizarNumeroGrupoAvaliado').value;
+            let notaFinal = nota1+nota2;
+
+            let body = JSON.stringify({
+                numero_avaliacao: numero_avaliacao,
+                numero_avaliacao_aluno: numero_avaliacao_aluno,
+                numero_avaliacao_professor: numero_avaliacao_professor,
+                numero_grupo_avaliado: numero_grupo_avaliado,
+                notaFinal: notaFinal
+            });
+
+            fetch(`/avaliacao/update/${numero_avaliacao}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/avaliacao/';
+                } else {
+                    console.error('Erro ao atualizar avaliacao:', response.statusText);
+                }
+            });
+        }
+
+        function deletarGrupo(numero_avaliacao) {
+            fetch(`/aluno/delete/${numero_avaliacao}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/grupo/';
+                } else {
+                    console.error('Erro ao deletar avaliacao:', response.statusText);
+                }
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
